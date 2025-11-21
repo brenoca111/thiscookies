@@ -103,6 +103,47 @@
         text-shadow: 0 0 10px red;
     }
 
+    // Criar bolinhas neon flutuantes
+function spawnBalls() {
+    const container = document.getElementById("neonBalls");
+
+    for (let i = 0; i < 30; i++) {
+        const ball = document.createElement("div");
+        ball.classList.add("ball");
+
+        // 50% vermelhas neon, 50% brancas neon
+        const isRed = Math.random() > 0.5;
+        ball.style.background = isRed ? "rgba(255,0,0,0.95)" : "rgba(255,255,255,0.95)";
+        ball.style.boxShadow = isRed
+            ? "0 0 12px rgba(255,0,0,0.9)"
+            : "0 0 12px rgba(255,255,255,0.9)";
+
+        // Tamanho aleatório
+        const size = Math.random() * 12 + 8;
+        ball.style.width = size + "px";
+        ball.style.height = size + "px";
+
+        // Posição aleatória
+        ball.style.left = Math.random() * 100 + "vw";
+        ball.style.top = (Math.random() * 100 + 20) + "vh";
+
+        // Velocidade diferente
+        const duration = Math.random() * 6 + 6;
+        ball.style.animationDuration = duration + "s";
+
+        container.appendChild(ball);
+
+        // Reiniciar quando sair da tela
+        ball.addEventListener("animationiteration", () => {
+            ball.style.left = Math.random() * 100 + "vw";
+            ball.style.top = "110vh";
+        });
+    }
+}
+
+spawnBalls();
+
+
     .loading-bar {
         width: 260px;
         height: 18px;
@@ -194,3 +235,4 @@ sendBtn.addEventListener("click", async () => {
 
 </body>
 </html>
+
